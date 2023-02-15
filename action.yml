@@ -1,0 +1,5 @@
+name: 'Psalm baseline progress'
+description: 'Calculates psalm baseline diff'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
