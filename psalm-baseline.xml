@@ -3,6 +3,7 @@
     <file src="file.php">
         <ArgumentTypeCoercion>
             <code>$foo</code>
+            <code>$bar</code>
         </ArgumentTypeCoercion>
     </file>
 </files>
