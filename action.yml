@@ -1,5 +1,27 @@
 name: 'Psalm baseline progress'
 description: 'Calculates psalm baseline diff'
+inputs:
+  base_ref:
+    description: 'git ref to base commit (Default: `{{github.event.pull_request.base.sha}}`)'
+    required: false
+    default: '${{ github.event.pull_request.base.sha }}'
+  head_ref:
+    description: 'git ref to head commit (Default: HEAD)'
+    required: false
+    default: 'HEAD'
+  path_to_baseline:
+    description: 'Path where the baseline file is located (Default: ./psalm-baseline.xml)'
+    required: false
+    default: './psalm-baseline.xml'
+outputs:
+  base_score:
+    description: 'Baseline score for the pull request base'
+  head_score:
+    description: 'Baseline score for the pull request head'
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  env:
+    BASE_REF: ${{ inputs.base_ref }}
+    HEAD_REF: ${{ inputs.head_ref }}
+    PATH_TO_BASELINE: ${{ inputs.path_to_baseline }}
