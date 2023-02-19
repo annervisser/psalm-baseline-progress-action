@@ -33,6 +33,7 @@ jobs:
   test-action:
     runs-on: ubuntu-latest
     permissions:
+      contents: read # Default permission when no others are specified, needed for actions/checkout
       pull-requests: write # Needed to post a comment on a pull request
     steps:
       - uses: actions/checkout@v3
@@ -41,7 +42,7 @@ jobs:
         uses: annervisser/psalm-baseline-progress-action@v1
 
       - uses: thollander/actions-comment-pull-request@v2
-        if: steps.baseline-scores.score_diff != 0 # Only comment if the score has changed
+        if: steps.baseline-scores.outputs.score_diff != 0 # Only comment if the score has changed
         with:
           message: |
             psalm baseline score changed: **${{ steps.baseline-scores.outputs.base_score }}** -> **${{ steps.baseline-scores.outputs.head_score }}**
@@ -61,7 +62,7 @@ jobs:
       - id: baseline-scores
         uses: annervisser/psalm-baseline-progress-action@v1
 
-      - if: steps.baseline-scores.score_diff > 0
+      - if: steps.baseline-scores.outputs.score_diff > 0
         run: |
           echo ::error::Baseline has grown by ${{ steps.baseline-scores.score_diff }}
           exit 1
