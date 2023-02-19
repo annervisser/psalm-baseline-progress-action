@@ -1,16 +1,19 @@
 name: 'Psalm baseline progress'
 description: 'Calculates psalm baseline diff'
+branding: 
+  icon: file-minus
+  color: purple
 inputs:
   base_ref:
-    description: 'git ref to base commit (Default: `{{github.event.pull_request.base.sha}}`)'
+    description: 'git ref to use for calculating the base_score'
     required: false
     default: '${{ github.event.pull_request.base.sha }}'
   head_ref:
-    description: 'git ref to head commit (Default: HEAD)'
+    description: 'git ref to use for calculating the head_score'
     required: false
     default: 'HEAD'
   path_to_baseline:
-    description: 'Path where the baseline file is located (Default: ./psalm-baseline.xml)'
+    description: 'Path to the baseline file'
     required: false
     default: './psalm-baseline.xml'
 outputs:
