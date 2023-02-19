@@ -2,7 +2,7 @@
 A GitHub action that calculates the size of your psalm baseline.
 Allowing you to track the progress of your baseline over time.
 
-The score is the total number of occurrences of `<code></code>` blocks
+The score is the total number of occurrences of `<code></code>` blocks in the baseline
 
 ## Usage
 
