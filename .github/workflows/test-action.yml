@@ -11,9 +11,9 @@ jobs:
         id: psalm-baseline-progress-action
         uses: ./
       - name: Comment on PR
-        if: steps.psalm-baseline-progress-action.outputs.base_score != steps.psalm-baseline-progress-action.outputs.head_score
+        if: steps.psalm-baseline-progress-action.outputs.score_diff != 0
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            _psalm baseline score changed: **${{ steps.psalm-baseline-progress-action.outputs.base_score }}** -> **${{ steps.psalm-baseline-progress-action.outputs.head_score }}**_
+            psalm baseline score changed: **${{ steps.psalm-baseline-progress-action.outputs.base_score }}** -> **${{ steps.psalm-baseline-progress-action.outputs.head_score }}**
           comment_tag: 'psalm_baseline_score_comment'
