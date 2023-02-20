@@ -19,11 +19,11 @@ inputs:
   template_decreased:
     description: 'Template to use when the baseline has decreased'
     required: false
-    default: '🍀 Psalm baseline has decreased : **$BASE_SCORE** → **$HEAD_SCORE** _(**${SCORE_DIFF}**)_'
+    default: '🍀 Psalm baseline has decreased: **$BASE_SCORE** → **$HEAD_SCORE** _(**${SCORE_DIFF}**)_'
   template_increased:
     description: 'Template to use when the baseline has grown'
     required: false
-    default: '📛 Psalm baseline has increased: **$BASE_SCORE** → **$HEAD_SCORE** _(+**${SCORE_DIFF}**)_'
+    default: '📛 Psalm baseline has increased: **$BASE_SCORE** → **$HEAD_SCORE** _(**+${SCORE_DIFF}**)_'
   template_no_change:
     description: 'Template to use when the baseline score hasn''t changed'
     required: false
