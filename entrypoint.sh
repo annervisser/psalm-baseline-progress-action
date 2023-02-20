@@ -40,10 +40,25 @@ echo "base_score: $BASE_SCORE"
 SCORE_DIFF=$((HEAD_SCORE - BASE_SCORE))
 SCORE_DIFF_STRING=$(printf '%+d' $SCORE_DIFF)
 
+# Process templates
+TEMPLATE=''
+if [ $SCORE_DIFF -gt 0 ]; then
+  TEMPLATE="$TEMPLATE_INCREASED"
+elif [ $SCORE_DIFF -lt 0 ]; then
+  TEMPLATE="$TEMPLATE_DECREASED"
+else
+  TEMPLATE="$TEMPLATE_NO_CHANGE"
+fi
+
+export BASE_SCORE HEAD_SCORE SCORE_DIFF SCORE_DIFF_STRING
+# shellcheck disable=SC2016
+OUTPUT_MESSAGE=$(echo "$TEMPLATE" | envsubst '$BASE_SCORE $HEAD_SCORE $SCORE_DIFF $SCORE_DIFF_STRING')
+
 # Set outputs
 {
   echo "base_score=$BASE_SCORE"
   echo "head_score=$HEAD_SCORE"
   echo "score_diff=$SCORE_DIFF"
   echo "score_diff_string=$SCORE_DIFF_STRING"
+  echo "output_message=$OUTPUT_MESSAGE"
 } >>"$GITHUB_OUTPUT"

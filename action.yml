@@ -16,6 +16,18 @@ inputs:
     description: 'Path to the baseline file'
     required: false
     default: './psalm-baseline.xml'
+  template_decreased:
+    description: 'Template to use when the baseline has decreased'
+    required: false
+    default: '🍀 Psalm baseline has decreased : **$BASE_SCORE** → **$HEAD_SCORE** _(**${SCORE_DIFF}**)_'
+  template_increased:
+    description: 'Template to use when the baseline has grown'
+    required: false
+    default: '📛 Psalm baseline has increased: **$BASE_SCORE** → **$HEAD_SCORE** _(+**${SCORE_DIFF}**)_'
+  template_no_change:
+    description: 'Template to use when the baseline score hasn''t changed'
+    required: false
+    default: 'Psalm baseline score remained the same: **$HEAD_SCORE**'
 outputs:
   base_score:
     description: 'Baseline score for the pull request base'
@@ -25,6 +37,8 @@ outputs:
     description: 'Difference between the two scores (head_score - base_score)'
   score_diff_string:
     description: 'Same as `score_diff`, with a `+` prepended for positive numbers'
+  output_message:
+    description: 'Parsed output based on the `template_*` inputs'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -32,3 +46,6 @@ runs:
     BASE_REF: ${{ inputs.base_ref }}
     HEAD_REF: ${{ inputs.head_ref }}
     PATH_TO_BASELINE: ${{ inputs.path_to_baseline }}
+    TEMPLATE_DECREASED: ${{ inputs.template_decreased }}
+    TEMPLATE_INCREASED: ${{ inputs.template_increased }}
+    TEMPLATE_NO_CHANGE: ${{ inputs.template_no_change }}
