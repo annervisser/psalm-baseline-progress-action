@@ -60,5 +60,11 @@ OUTPUT_MESSAGE=$(echo "$TEMPLATE" | envsubst '$BASE_SCORE $HEAD_SCORE $SCORE_DIF
   echo "head_score=$HEAD_SCORE"
   echo "score_diff=$SCORE_DIFF"
   echo "score_diff_string=$SCORE_DIFF_STRING"
-  echo "output_message=$OUTPUT_MESSAGE"
+} >>"$GITHUB_OUTPUT"
+
+# Output message could be multiline, use heredoc
+{
+  echo "output_message<<EOF"
+  echo "$OUTPUT_MESSAGE"
+  echo "EOF"
 } >>"$GITHUB_OUTPUT"
