@@ -23,6 +23,8 @@ outputs:
     description: 'Baseline score for the pull request head'
   score_diff:
     description: 'Difference between the two scores (head_score - base_score)'
+  score_diff_string:
+    description: 'Same as `score_diff`, with a `+` prepended for positive numbers'
 runs:
   using: 'docker'
   image: 'Dockerfile'

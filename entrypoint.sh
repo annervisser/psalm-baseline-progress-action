@@ -38,10 +38,12 @@ echo "base_score: $BASE_SCORE"
 
 # Check if scores are different
 SCORE_DIFF=$((HEAD_SCORE - BASE_SCORE))
+SCORE_DIFF_STRING=$(printf '%+d' $SCORE_DIFF)
 
 # Set outputs
 {
   echo "base_score=$BASE_SCORE"
   echo "head_score=$HEAD_SCORE"
   echo "score_diff=$SCORE_DIFF"
+  echo "score_diff_string=$SCORE_DIFF_STRING"
 } >>"$GITHUB_OUTPUT"
