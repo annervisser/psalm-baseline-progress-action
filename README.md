@@ -17,11 +17,12 @@ The score is the total number of occurrences of `<code></code>` blocks in the ba
 
 
 ### Outputs
-| Output     | Description                                                 |
-|------------|-------------------------------------------------------------|
-| base_score | Baseline score at base_ref                                  |
-| head_score | Baseline score at head_ref                                  |
-| score_diff | Difference between the two scores (head_score - base_score) |
+| Output            | Description                                                     |
+|-------------------|-----------------------------------------------------------------|
+| base_score        | Baseline score at base_ref                                      |
+| head_score        | Baseline score at head_ref                                      |
+| score_diff        | Difference between the two scores (head_score - base_score)     |
+| score_diff_string | 'Same a `score_diff`, with a `+` prepended for positive numbers |
 
 ## Examples
 
