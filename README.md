@@ -4,6 +4,18 @@ Allowing you to track the progress of your baseline over time.
 
 The score is the total number of occurrences of `<code></code>` blocks in the baseline
 
+---
+
+<!-- TOC -->
+* [Usage](#usage)
+  * [Inputs](#inputs)
+  * [Outputs](#outputs)
+  * [Templates](#templates)
+* [Examples](#examples)
+  * [Comment on pull requests](#comment-on-pull-requests)
+  * [Fail pull request check if baseline has grown](#fail-pull-request-check-if-baseline-has-grown)
+<!-- TOC -->
+
 ## Usage
 
 ### Inputs
@@ -62,7 +74,7 @@ Psalm baseline score remained the same: **500**
 
 ## Examples
 
-### Comment on Pull requests
+### Comment on pull requests
 See [Templates](#Templates) for customizing the `output_message`
 ```yaml
 on:
