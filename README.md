@@ -96,6 +96,7 @@ jobs:
           message: ${{ steps.psalm-baseline-progress-action.outputs.output_message }}
           comment_tag: 'psalm_baseline_score_comment'
           create_if_not_exists: ${{ steps.psalm-baseline-progress-action.outputs.score_diff != 0 }} # Only create comment when baseline score changed, but always update existing comment
+          # GITHUB_TOKEN: <a GitHub PAT> # Only needed to comment on pull requests coming from forks
 ```
 
 ### Fail pull request check if baseline has grown
