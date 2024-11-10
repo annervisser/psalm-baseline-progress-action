@@ -86,17 +86,17 @@ jobs:
       contents: read # Default permission when no others are specified, needed for actions/checkout
       pull-requests: write # Needed to post a comment on a pull request
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - id: baseline-scores
         uses: annervisser/psalm-baseline-progress-action@v1
 
-      - uses: thollander/actions-comment-pull-request@v2
+      - uses: thollander/actions-comment-pull-request@v3
         with:
           message: ${{ steps.psalm-baseline-progress-action.outputs.output_message }}
-          comment_tag: 'psalm_baseline_score_comment'
-          create_if_not_exists: ${{ steps.psalm-baseline-progress-action.outputs.score_diff != 0 }} # Only create comment when baseline score changed, but always update existing comment
-          # GITHUB_TOKEN: <a GitHub PAT> # Only needed to comment on pull requests coming from forks
+          comment-tag: 'psalm_baseline_score_comment' # Add marker so existing comment can be updated
+          create-if-not-exists: ${{ steps.psalm-baseline-progress-action.outputs.score_diff != 0 }} # Only create comment when baseline score changed, but always update existing comment
+          # github-token: <a GitHub PAT> # Only needed to comment on pull requests coming from forks
 ```
 
 ### Fail pull request check if baseline has grown
@@ -107,7 +107,7 @@ jobs:
   test-action:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - id: baseline-scores
         uses: annervisser/psalm-baseline-progress-action@v1
