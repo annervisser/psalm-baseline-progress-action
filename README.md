@@ -4,6 +4,8 @@ Allowing you to track the progress of your baseline over time.
 
 The score is the total number of occurrences of `<code></code>` blocks in the baseline
 
+![image](https://github.com/user-attachments/assets/1630daf6-6dc3-4787-b183-09ffd23e4055)
+
 ---
 
 <!-- TOC -->
@@ -80,7 +82,7 @@ See [Templates](#Templates) for customizing the `output_message`
 on:
   pull_request:
 jobs:
-  test-action:
+  comment-psalm-baseline-progress:
     runs-on: ubuntu-latest
     permissions:
       contents: read # Default permission when no others are specified, needed for actions/checkout
@@ -104,7 +106,7 @@ jobs:
 on:
   pull_request:
 jobs:
-  test-action:
+  reject-psalm-baseline-increases:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
