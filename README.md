@@ -12,6 +12,7 @@ The score is the total number of occurrences of `<code></code>` blocks in the ba
 * [Usage](#usage)
   * [Inputs](#inputs)
   * [Outputs](#outputs)
+  * [Custom file filters](#custom-file-filters)
   * [Templates](#templates)
 * [Examples](#examples)
   * [Comment on pull requests](#comment-on-pull-requests)
@@ -23,14 +24,15 @@ The score is the total number of occurrences of `<code></code>` blocks in the ba
 ### Inputs
 > **Note**: All inputs are optional and the defaults should work in most cases 
 
-| Input              | Default                                   | Description                                                                          |
-|--------------------|-------------------------------------------|--------------------------------------------------------------------------------------|
-| base_ref           | ${{ github.event.pull_request.base.sha }} | git ref to use for calculating the base_score                                        |
-| head_ref           | 'HEAD'                                    | git ref to use for calculating the head_score                                        |
-| path_to_baseline   | './psalm-baseline.xml'                    | Path to the baseline file                                                            |
-| template_decreased | See [Templates](#Templates)               | Template to use when the baseline has decreased (See [Templates](#Templates))        |
-| template_increased | See [Templates](#Templates)               | Template to use when the baseline has grown (See [Templates](#Templates))            |
-| template_no_change | See [Templates](#Templates)               | Template to use when the baseline score hasn't changed (See [Templates](#Templates)) |
+| Input                | Default                                   | Description                                                                                                                                                       |
+|----------------------|-------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| base_ref             | ${{ github.event.pull_request.base.sha }} | git ref to use for calculating the base_score                                                                                                                     |
+| head_ref             | 'HEAD'                                    | git ref to use for calculating the head_score                                                                                                                     |
+| path_to_baseline     | './psalm-baseline.xml'                    | Path to the baseline file                                                                                                                                         |
+| file_xpath_condition | 'not(starts-with(@src, "test"))'          | A custom xpath condition to filter specific file entries. <br/>Default to excluding paths that start with "test"<br/> Set to an empty string to include all files |
+| template_decreased   | See [Templates](#Templates)               | Template to use when the baseline has decreased (See [Templates](#Templates))                                                                                     |
+| template_increased   | See [Templates](#Templates)               | Template to use when the baseline has grown (See [Templates](#Templates))                                                                                         |
+| template_no_change   | See [Templates](#Templates)               | Template to use when the baseline score hasn't changed (See [Templates](#Templates))                                                                              |
 
 ### Outputs
 | Output            | Description                                                                  |
@@ -41,6 +43,21 @@ The score is the total number of occurrences of `<code></code>` blocks in the ba
 | score_diff_string | Same a `score_diff`, with a `+` prepended for positive numbers               |
 | output_message    | Parsed output based on the `template_*` inputs (See [Templates](#Templates)) |
 
+### Custom file filters
+
+You can set `file_xpath_condition` to include or exclude specific files.
+The value should be a valid XPath 1.0 expression that can be applied to `<file/>` entries.
+By default, files whose path starts with `test` are excluded.
+
+For a list of available functions, see [MDN](https://developer.mozilla.org/en-US/docs/Web/XML/XPath/Reference/Functions)
+
+#### Example filters
+
+| `file_xpath_condition`                                          | Description                                          |
+|-----------------------------------------------------------------|------------------------------------------------------|
+| `not(starts-with(@src, 'tests/'))`                              | Exclude files in the `tests` directory               |
+| `not(starts-with(@src, 'tests/') or starts-with(@src, 'bin/'))` | Exclude files in the `tests` and `bin` directories   |
+| `contains(@src, '/domain/')`                                    | Include only files contains `/domain/` in their path |
 
 ### Templates
 The template_* inputs allow you to specify different templates for when the score increases/decreases/remains the same.
