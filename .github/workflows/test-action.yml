@@ -2,17 +2,19 @@ on:
   pull_request:
 jobs:
   test-action:
-    runs-on: ubuntu-latest
+    runs-on: namespace-profile-psalm-baseline-progress-action
     permissions:
       pull-requests: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
+
       - name: psalm-baseline-progress-action
         id: psalm-baseline-progress-action
         uses: ./
+
       - name: Comment on PR
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
           message: ${{ steps.psalm-baseline-progress-action.outputs.output_message }}
-          comment_tag: 'psalm_baseline_score_comment'
-          create_if_not_exists: ${{ steps.psalm-baseline-progress-action.outputs.score_diff != 0 }} # Only create comment when baseline score changed, but always update existing comment
+          comment-tag: 'psalm_baseline_score_comment'
+          create-if-not-exists: ${{ steps.psalm-baseline-progress-action.outputs.score_diff != 0 }} # Only create comment when baseline score changed, but always update existing comment

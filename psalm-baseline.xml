@@ -7,4 +7,18 @@
             <code>$baz</code>
         </ArgumentTypeCoercion>
     </file>
+    <file src="test/file.php">
+        <ArgumentTypeCoercion>
+            <code>$foo</code>
+            <code>$bar</code>
+            <code>$baz</code>
+        </ArgumentTypeCoercion>
+    </file>
+    <file src="foo/file.php">
+        <ArgumentTypeCoercion>
+            <code>$foo</code>
+            <code>$bar</code>
+            <code>$baz</code>
+        </ArgumentTypeCoercion>
+    </file>
 </files>
