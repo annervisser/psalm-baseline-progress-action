@@ -24,15 +24,15 @@ The score is the total number of occurrences of `<code></code>` blocks in the ba
 ### Inputs
 > **Note**: All inputs are optional and the defaults should work in most cases 
 
-| Input                | Default                                   | Description                                                                                                                                                       |
-|----------------------|-------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| base_ref             | ${{ github.event.pull_request.base.sha }} | git ref to use for calculating the base_score                                                                                                                     |
-| head_ref             | 'HEAD'                                    | git ref to use for calculating the head_score                                                                                                                     |
-| path_to_baseline     | './psalm-baseline.xml'                    | Path to the baseline file                                                                                                                                         |
-| file_xpath_condition | 'not(starts-with(@src, "test"))'          | A custom xpath condition to filter specific file entries. <br/>Default to excluding paths that start with "test"<br/> Set to an empty string to include all files |
-| template_decreased   | See [Templates](#Templates)               | Template to use when the baseline has decreased (See [Templates](#Templates))                                                                                     |
-| template_increased   | See [Templates](#Templates)               | Template to use when the baseline has grown (See [Templates](#Templates))                                                                                         |
-| template_no_change   | See [Templates](#Templates)               | Template to use when the baseline score hasn't changed (See [Templates](#Templates))                                                                              |
+| Input                | Default                                     | Description                                                                                                                                                       |
+|----------------------|---------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| base_ref             | `${{ github.event.pull_request.base.sha }}` | git ref to use for calculating the base_score                                                                                                                     |
+| head_ref             | `'HEAD'`                                    | git ref to use for calculating the head_score                                                                                                                     |
+| path_to_baseline     | `'./psalm-baseline.xml'`                    | Path to the baseline file                                                                                                                                         |
+| file_xpath_condition | `'not(starts-with(@src, "test"))'`          | A custom xpath condition to filter specific file entries. <br/>Default to excluding paths that start with "test"<br/> Set to an empty string to include all files |
+| template_decreased   | See [Templates](#Templates)                 | Template to use when the baseline has decreased (See [Templates](#Templates))                                                                                     |
+| template_increased   | See [Templates](#Templates)                 | Template to use when the baseline has grown (See [Templates](#Templates))                                                                                         |
+| template_no_change   | See [Templates](#Templates)                 | Template to use when the baseline score hasn't changed (See [Templates](#Templates))                                                                              |
 
 ### Outputs
 | Output            | Description                                                                  |
