@@ -6,30 +6,43 @@ set -eu
 git config --global --add safe.directory /github/workspace
 
 # Log inputs for debugging
-echo "::debug::BASE: $BASE_REF"
-echo "::debug::HEAD: $HEAD_REF"
-echo "::debug::PATH_TO_BASELINE: $PATH_TO_BASELINE"
+echo "::group::Inputs"
+echo "BASE:                 $BASE_REF"
+echo "HEAD:                 $HEAD_REF"
+echo "PATH_TO_BASELINE:     $PATH_TO_BASELINE"
+echo "FILE_XPATH_CONDITION: $FILE_XPATH_CONDITION"
+echo "::endgroup::"
 
 get_baseline_score() {
   if ! BASELINE_XML=$(git show "$1"); then
-    echoerr "::error ::No baseline found at $1" 1>&2
+    echo "::error ::No baseline found at $1" 1>&2
     return 1
   fi
 
-  if ! BASELINE_SCORE=$(echo "$BASELINE_XML" | xmllint --xpath 'count(//file[not(starts-with(@src, "test"))]/*/code)' -); then
-    echoerr "::error ::Unable to parse baseline at $1" 1>&2
+  FILE_XPATH="//file[${FILE_XPATH_CONDITION:-"*"}]"
+
+  echo "::group::Matched entries" 1>&2
+  echo "$BASELINE_XML" | xmllint --xpath "$FILE_XPATH" - | cat 1>&2
+  echo "::endgroup::" 1>&2
+
+  if ! BASELINE_SCORE=$(echo "$BASELINE_XML" | xmllint --xpath "count($FILE_XPATH/*/code)" -); then
+    echo "::error ::Unable to parse baseline at $1" 1>&2
     return 1
   fi
 
   echo "$BASELINE_SCORE"
 }
 
+echo "Checking head"
 # Fetch if needed
 git reflog "$HEAD_REF" 2>/dev/null || git fetch --depth=1 origin "$HEAD_REF"
 # Get score
 HEAD_SCORE=$(get_baseline_score "$HEAD_REF:$PATH_TO_BASELINE")
 echo "head_score: $HEAD_SCORE"
 
+printf "\n---\n\n"
+
+echo "Checking base"
 # Fetch if needed
 git reflog "$BASE_REF" 2>/dev/null || git fetch --depth=1 origin "$BASE_REF"
 # Get score

@@ -28,6 +28,10 @@ inputs:
     description: 'Template to use when the baseline score hasn''t changed'
     required: false
     default: 'Psalm baseline score remained the same: **$HEAD_SCORE**'
+  file_xpath_condition:
+    description: 'A custom xpath condition to filter specific file entries. Default to excluding paths that start with "test"'
+    required: false
+    default: 'not(starts-with(@src, "test"))'
 outputs:
   base_score:
     description: 'Baseline score for the pull request base'
@@ -49,3 +53,4 @@ runs:
     TEMPLATE_DECREASED: ${{ inputs.template_decreased }}
     TEMPLATE_INCREASED: ${{ inputs.template_increased }}
     TEMPLATE_NO_CHANGE: ${{ inputs.template_no_change }}
+    FILE_XPATH_CONDITION: ${{ inputs.file_xpath_condition }}

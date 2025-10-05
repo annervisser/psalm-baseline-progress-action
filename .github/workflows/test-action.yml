@@ -8,9 +8,19 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: psalm-baseline-progress-action
+      - name: 'Action with default settings'
         id: psalm-baseline-progress-action
         uses: ./
+
+      - name: 'Action without xpath condition'
+        uses: ./
+        with:
+          file_xpath_condition: ''
+
+      - name: 'Action with custom xpath condition'
+        uses: ./
+        with:
+          file_xpath_condition: 'not(starts-with(@src, "test/") or starts-with(@src, "foo/"))'
 
       - name: Comment on PR
         uses: thollander/actions-comment-pull-request@v3
