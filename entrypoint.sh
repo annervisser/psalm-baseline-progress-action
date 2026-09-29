@@ -2,8 +2,8 @@
 
 set -eu
 
-# Mark the checkout as safe
-git config --global --add safe.directory /github/workspace
+# Job containers run as a different user than the checkout owner
+git() { command git -c safe.directory="$PWD" "$@"; }
 
 # Log inputs for debugging
 echo "::group::Inputs"
@@ -22,10 +22,10 @@ get_baseline_score() {
   FILE_XPATH="//file[${FILE_XPATH_CONDITION:-"*"}]"
 
   echo "::group::Matched entries" 1>&2
-  echo "$BASELINE_XML" | xmllint --xpath "$FILE_XPATH" - | cat 1>&2
+  printf '%s\n' "$BASELINE_XML" | xmllint --xpath "$FILE_XPATH" - | cat 1>&2
   echo "::endgroup::" 1>&2
 
-  if ! BASELINE_SCORE=$(echo "$BASELINE_XML" | xmllint --xpath "count($FILE_XPATH/*/code)" -); then
+  if ! BASELINE_SCORE=$(printf '%s\n' "$BASELINE_XML" | xmllint --xpath "count($FILE_XPATH/*/code)" -); then
     echo "::error ::Unable to parse baseline at $1" 1>&2
     return 1
   fi
@@ -65,7 +65,7 @@ fi
 
 export BASE_SCORE HEAD_SCORE SCORE_DIFF SCORE_DIFF_STRING
 # shellcheck disable=SC2016
-OUTPUT_MESSAGE=$(echo "$TEMPLATE" | envsubst '$BASE_SCORE $HEAD_SCORE $SCORE_DIFF $SCORE_DIFF_STRING')
+OUTPUT_MESSAGE=$(printf '%s\n' "$TEMPLATE" | envsubst '$BASE_SCORE $HEAD_SCORE $SCORE_DIFF $SCORE_DIFF_STRING')
 
 # Set outputs
 {
@@ -78,6 +78,6 @@ OUTPUT_MESSAGE=$(echo "$TEMPLATE" | envsubst '$BASE_SCORE $HEAD_SCORE $SCORE_DIF
 # Output message could be multiline, use heredoc
 {
   echo "output_message<<EOF"
-  echo "$OUTPUT_MESSAGE"
+  printf '%s\n' "$OUTPUT_MESSAGE"
   echo "EOF"
 } >>"$GITHUB_OUTPUT"

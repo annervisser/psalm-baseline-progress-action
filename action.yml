@@ -35,22 +35,36 @@ inputs:
 outputs:
   base_score:
     description: 'Baseline score for the pull request base'
+    value: ${{ steps.baseline-progress.outputs.base_score }}
   head_score:
     description: 'Baseline score for the pull request head'
+    value: ${{ steps.baseline-progress.outputs.head_score }}
   score_diff:
     description: 'Difference between the two scores (head_score - base_score)'
+    value: ${{ steps.baseline-progress.outputs.score_diff }}
   score_diff_string:
     description: 'Same as `score_diff`, with a `+` prepended for positive numbers'
+    value: ${{ steps.baseline-progress.outputs.score_diff_string }}
   output_message:
     description: 'Parsed output based on the `template_*` inputs'
+    value: ${{ steps.baseline-progress.outputs.output_message }}
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  env:
-    BASE_REF: ${{ inputs.base_ref }}
-    HEAD_REF: ${{ inputs.head_ref }}
-    PATH_TO_BASELINE: ${{ inputs.path_to_baseline }}
-    TEMPLATE_DECREASED: ${{ inputs.template_decreased }}
-    TEMPLATE_INCREASED: ${{ inputs.template_increased }}
-    TEMPLATE_NO_CHANGE: ${{ inputs.template_no_change }}
-    FILE_XPATH_CONDITION: ${{ inputs.file_xpath_condition }}
+  using: 'composite'
+  steps:
+    - shell: sh
+      run: |
+        command -v xmllint >/dev/null && command -v envsubst >/dev/null && exit 0
+        [ "$(id -u)" = 0 ] || SUDO=sudo
+        $SUDO apt-get update -qq
+        $SUDO apt-get install -y -qq libxml2-utils gettext-base
+    - id: baseline-progress
+      shell: sh
+      run: '"$GITHUB_ACTION_PATH/entrypoint.sh"'
+      env:
+        BASE_REF: ${{ inputs.base_ref }}
+        HEAD_REF: ${{ inputs.head_ref }}
+        PATH_TO_BASELINE: ${{ inputs.path_to_baseline }}
+        TEMPLATE_DECREASED: ${{ inputs.template_decreased }}
+        TEMPLATE_INCREASED: ${{ inputs.template_increased }}
+        TEMPLATE_NO_CHANGE: ${{ inputs.template_no_change }}
+        FILE_XPATH_CONDITION: ${{ inputs.file_xpath_condition }}
